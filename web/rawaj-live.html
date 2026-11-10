@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رواج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E4E6E8; --card:#FFFFFF; --text:#26282C; --muted:#4A4D52; --faint:#7A7E85; --border:#D2D5D8;
+  --primary:#26282C; --primary2:#34373C; --soft:#C6FF0059; --on-primary:#C6FF00; --neon:#C6FF00;
+  --success:#12A26B; --warning:#B07800; --danger:#D6334C; --link:#26282C;
+  --shadow:0 1px 2px rgba(20,22,43,.04),0 4px 14px rgba(20,22,43,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17181B; --card:#222428; --text:#F1F2F3; --muted:#A6A9AE; --faint:#80848A; --border:#33363B;
+    --primary:#C6FF00; --primary2:#B5EA00; --soft:#C6FF0026; --on-primary:#26282C;
+    --success:#2BC48A; --warning:#E3A82B; --danger:#F05A70; --link:#C6FF00; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17181B; --card:#222428; --text:#F1F2F3; --muted:#A6A9AE; --faint:#80848A; --border:#33363B;
+  --primary:#C6FF00; --primary2:#B5EA00; --soft:#C6FF0026; --on-primary:#26282C;
+  --success:#2BC48A; --warning:#E3A82B; --danger:#F05A70; --link:#C6FF00; --shadow:none;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--text);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;font-size:15px}
+button,input,textarea,select{font:inherit;color:inherit}
+#app{max-width:560px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+@media (min-width:600px){#app{border-inline:1px solid var(--border)}}
+header.bar{display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--card);border-bottom:1px solid var(--border);min-height:60px}
+header.bar h1{flex:1;margin:0;font-size:17px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ib{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;cursor:pointer;flex-shrink:0;position:relative}
+.ib svg{width:19px;height:19px}
+main{flex:1;overflow-y:auto;padding:16px 14px 24px;display:flex;flex-direction:column;gap:12px}
+nav.tabs{display:flex;background:var(--card);border-top:1px solid var(--border);padding:6px 4px calc(10px + env(safe-area-inset-bottom))}
+nav.tabs button{flex:1;background:none;border:0;padding:6px 0 2px;color:var(--faint);font-size:11.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;position:relative}
+nav.tabs svg{width:22px;height:22px}
+nav.tabs button.on{color:var(--text)}
+nav.tabs button.on::before{content:"";position:absolute;top:-6px;width:30px;height:3px;border-radius:0 0 3px 3px;background:var(--neon)}
+.bdg{position:absolute;top:0;inset-inline-start:calc(50% + 4px);min-width:17px;height:17px;border-radius:9px;background:var(--danger);color:#fff;font-size:10.5px;display:grid;place-items:center;padding:0 4px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+.card.tap{cursor:pointer}
+.card.tap:active{transform:scale(.985)}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.t{font-size:16px;font-weight:700;margin:0;line-height:1.45}
+.m{color:var(--muted);font-size:13.5px;line-height:1.6;margin:0}
+.s{color:var(--faint);font-size:12px}
+.big{font-size:22px;font-weight:700}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:2px 0}
+.row .l{color:var(--muted)} .row .v{font-weight:600;text-align:left}
+.row.tot{border-top:1px dashed var(--border);padding-top:8px;margin-top:2px;font-size:15.5px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:600;white-space:nowrap;background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+.b-ok{background:color-mix(in srgb,var(--success) 14%,transparent);color:var(--success);border-color:transparent}
+.b-warn{background:color-mix(in srgb,var(--warning) 14%,transparent);color:var(--warning);border-color:transparent}
+.b-bad{background:color-mix(in srgb,var(--danger) 13%,transparent);color:var(--danger);border-color:transparent}
+.b-neon{background:var(--soft);color:var(--text);border-color:transparent}
+.btn{width:100%;padding:13px;border-radius:13px;font-size:15.5px;font-weight:600;cursor:pointer;border:1px solid var(--primary);background:var(--primary);color:var(--on-primary);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn.o{background:transparent;color:var(--text);border-color:var(--border)}
+.btn.d{background:transparent;color:var(--danger);border-color:var(--danger)}
+.btn.sm{width:auto;white-space:nowrap;flex-shrink:0;padding:8px 14px;font-size:13.5px;border-radius:11px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btns{display:flex;gap:8px}
+.btns .btn{flex:1}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+label.f small{font-weight:400;color:var(--faint);font-size:12px}
+.in{width:100%;border:1px solid var(--border);border-radius:12px;padding:12px;background:var(--card);font-size:15px;outline:none}
+.in:focus{border-color:var(--text);box-shadow:0 0 0 3px var(--soft)}
+textarea.in{min-height:90px;resize:vertical;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 13px;border-radius:99px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:13.5px;display:inline-flex;align-items:center;gap:6px}
+.chip.on{border-color:var(--text);background:var(--soft);font-weight:600}
+.chip .pl{width:20px;height:20px}
+.pl{display:inline-block;width:24px;height:24px;border-radius:7px;overflow:hidden;flex-shrink:0}
+.pl svg{width:100%;height:100%;display:block}
+.pls{display:flex;gap:4px}
+.empty{text-align:center;padding:36px 18px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty svg{width:52px;height:52px;opacity:.45}
+.empty b{color:var(--text);font-size:16px}
+.note{font-size:13px;color:var(--muted);background:var(--soft);border-radius:12px;padding:10px 12px;line-height:1.7}
+.warn{font-size:13px;color:var(--warning);background:color-mix(in srgb,var(--warning) 12%,transparent);border-radius:12px;padding:10px 12px;line-height:1.7}
+.err{font-size:13px;color:var(--danger);min-height:0}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:13px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow)}
+.kpi b{font-size:20px}
+.kpi.hero{grid-column:1/-1;background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.kpi.hero .s{color:inherit;opacity:.8}
+.kpi.tap{cursor:pointer}
+.sec{font-size:13px;font-weight:700;color:var(--muted);margin:6px 2px -2px}
+.filter{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.filter .chip{white-space:nowrap;padding:6px 12px;font-size:13px}
+.av{width:42px;height:42px;border-radius:50%;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;font-weight:700;flex-shrink:0;font-size:17px}
+.av.lg{width:72px;height:72px;font-size:28px}
+.who{display:flex;gap:10px;align-items:center}
+.who>div{min-width:0}
+.vf{display:inline-block;width:15px;height:15px;vertical-align:-2px;margin-inline-start:3px}
+.track{display:flex;gap:4px}
+.track i{flex:1;height:5px;border-radius:3px;background:var(--border)}
+.track i.on{background:var(--success)}
+.track i.cur{background:var(--text)}
+.tl{display:flex;flex-direction:column}
+.tl div{display:flex;gap:10px;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.tl div:last-child{border-bottom:0}
+.tl span.s{white-space:nowrap}
+.msgs{display:flex;flex-direction:column;gap:6px}
+.msg{max-width:80%;padding:8px 12px;border-radius:14px;font-size:14.5px;line-height:1.55;word-wrap:break-word}
+.msg.me{align-self:flex-start;background:color-mix(in srgb,var(--neon) 30%,var(--card));border-bottom-right-radius:4px}
+.msg.them{align-self:flex-end;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg .s{display:block;font-size:10.5px;margin-top:2px}
+.msg.sys{align-self:center;background:transparent;color:var(--faint);font-size:12px;text-align:center}
+.comp{display:flex;gap:8px;align-items:flex-end}
+.comp textarea{flex:1;min-height:44px;max-height:120px;border-radius:22px;padding:11px 16px;resize:none}
+.send{width:44px;height:44px;border-radius:50%;border:0;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.send svg{width:19px;height:19px}
+.sheet-wrap{position:absolute;inset:0;background:rgba(10,11,16,.5);display:flex;align-items:flex-end;z-index:30}
+.sheet{background:var(--card);width:100%;border-radius:22px 22px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;max-height:90%;overflow-y:auto}
+.toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:40;max-width:90%;text-align:center}
+.splash{flex:1;display:grid;place-items:center;align-content:center;gap:14px;text-align:center}
+.splash h2{margin:0;font-size:34px}
+.onb{flex:1;display:flex;flex-direction:column;padding:28px 22px calc(22px + env(safe-area-inset-bottom));gap:18px;overflow-y:auto}
+.onb .ill{flex:1;display:grid;place-items:center;align-content:center;gap:18px;text-align:center;min-height:300px}
+.onb h2{margin:0;font-size:24px;line-height:1.4}
+.onb p{margin:0;color:var(--muted);line-height:1.8;font-size:15.5px;max-width:380px}
+.dots{display:flex;gap:6px;justify-content:center}
+.dots i{width:8px;height:8px;border-radius:4px;background:var(--border)}
+.dots i.on{width:22px;background:var(--text)}
+.bigic{width:110px;height:110px;border-radius:32px;background:var(--card);border:1px solid var(--border);display:grid;place-items:center}
+.bigic svg{width:54px;height:54px}
+.role{display:flex;gap:14px;align-items:center;padding:16px;border:1.5px solid var(--border);border-radius:16px;background:var(--card);cursor:pointer;text-align:right;width:100%}
+.role.on{border-color:var(--text);background:var(--soft)}
+.role .ic{width:48px;height:48px;border-radius:14px;background:var(--bg);display:grid;place-items:center;flex-shrink:0}
+.role .ic svg{width:26px;height:26px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.7;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:#26282C;flex-shrink:0}
+a{color:var(--link)}
+.lnk{background:none;border:0;padding:0;color:var(--link);text-decoration:underline;cursor:pointer;font-size:13.5px}
+.split{display:flex;gap:8px}
+.split>*{flex:1;min-width:0}
+.cd{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+'use strict';
+/* ============ الإعدادات المعتمدة ============ */
+const BRAND_FEE = 0.05, CREATOR_FEE = 0.10, MIN_FEE = 25, FIRST_DEAL_OFF = 0.5, VAT = 0.15, AUTO_RELEASE_H = 72;
+const MIN_BUDGET = 100, MIN_WITHDRAW = 50;
+const PLATFORMS = { snapchat:'سناب شات', instagram:'انستقرام', tiktok:'تيك توك' };
+const NICHES = ['أزياء','تجميل','مطاعم وكافيهات','تقنية','سفر وسياحة','صحة ورياضة','عائلة وأطفال','سيارات','عقار','ألعاب','تعليم','أخرى'];
+const FOLLOWERS = ['أقل من 10 آلاف','10–50 ألف','50–100 ألف','100–500 ألف','500 ألف – مليون','أكثر من مليون'];
+const CONTENT = ['سناب ستوري','ريلز','فيديو تيك توك','بوست','زيارة وتغطية','بث مباشر'];
+const CITIES = ['الرياض','جدة','مكة','المدينة','الدمام','الخبر','أبها','تبوك','القصيم','أخرى'];
+
+/* ============ أدوات ============ */
+const r2 = n => Math.round(n * 100) / 100;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sar = n => (Number(n) || 0).toLocaleString('en-US', { maximumFractionDigits:2 }) + ' ر.س';
+const ago = t => { const d = (Date.now() - t) / 6e4; if (d < 1) return 'الآن'; if (d < 60) return `قبل ${Math.floor(d)} د`; if (d < 1440) return `قبل ${Math.floor(d/60)} س`; return new Date(t).toLocaleDateString('ar-SA-u-ca-gregory-nu-latn', { day:'numeric', month:'short' }); };
+const dt = t => new Date(t).toLocaleString('ar-SA-u-ca-gregory-nu-latn', { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' });
+const initial = s => (String(s || '؟').trim()[0] || '؟');
+function brandFees(price, first){ const full = r2(price * BRAND_FEE); const fee = first ? r2(full * (1 - FIRST_DEAL_OFF)) : full; const vat = r2(fee * VAT); return { full, fee, vat, total:r2(price + fee + vat) }; }
+function creatorCut(price, brandFee){ let c = r2(price * CREATOR_FEE); if (price > 0 && c + brandFee < MIN_FEE) c = Math.min(price, r2(MIN_FEE - brandFee)); return { commission:c, payout:r2(price - c) }; }
+function mask(text){
+  let hit = false;
+  const out = String(text)
+    .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, () => (hit = true, '•••'))
+    .replace(/(https?:\/\/)?(wa\.me|t\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\/\S*/gi, () => (hit = true, '•••'))
+    .replace(/(\+|00)?[\d٠-٩][\d٠-٩\s-]{7,}[\d٠-٩]/g, () => (hit = true, '•••'));
+  return { out, hit };
+}
+
+/* ============ أيقونات ============ */
+const I = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  deals:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+  wallet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/><path d="M6 6V5a2 2 0 0 1 2-2h9"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.6-5 6.5-5s5.5 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.3 0 4 1.3 4.6 4"/></svg>',
+  bank:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 4l9 5M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4 3 11l6 2.5L11.5 20z" transform="scale(-1 1) translate(-23 0)"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>',
+  store:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16l-1.5-5h-13zM5 9v11h14V9M9 20v-6h6v6"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="14" rx="3"/><path d="m16 10 5-3v10l-5-3"/></svg>',
+  inbox:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 5h14l2 8v6H3v-6z"/></svg>',
+  coins:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>',
+  admin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><circle cx="12" cy="11" r="2.5"/><path d="M8 17c.8-1.6 2.2-2.5 4-2.5s3.2.9 4 2.5"/></svg>',
+};
+const VF = '<svg class="vf" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#12A26B"/><path d="m7 12.5 3.2 3L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const GHOST = 'M12 3.6c-2.6 0-4.5 2-4.5 4.6v2.1c-.5.1-1 .1-1.3.3-.3.2 0 .6.4.8l.9.4c-.5 1.4-1.6 2.7-3 3.2-.3.1-.3.5 0 .6.6.3 1.3.4 1.9.6.2.4.1 1 .5 1.1.6.1 1.3-.2 2 0 .9.3 1.7 1.3 3.1 1.3s2.2-1 3.1-1.3c.7-.2 1.4.1 2 0 .4-.1.3-.7.5-1.1.6-.2 1.3-.3 1.9-.6.3-.1.3-.5 0-.6-1.4-.5-2.5-1.8-3-3.2l.9-.4c.4-.2.7-.6.4-.8-.3-.2-.8-.2-1.3-.3V8.2c0-2.6-1.9-4.6-4.5-4.6z';
+const NOTE = 'M13 5h2.4c.3 1.7 1.5 2.9 3.2 3.1v2.4c-1.2 0-2.3-.4-3.2-1v5.3a4.2 4.2 0 1 1-4.2-4.2v2.4a1.8 1.8 0 1 0 1.8 1.8z';
+let igN = 0;
+const PL = {
+  snapchat:() => `<svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#FFFC00"/><path d="${GHOST}" fill="#fff" stroke="#111" stroke-width="1"/></svg>`,
+  instagram:() => { const id = 'ig' + (++igN); return `<svg viewBox="0 0 24 24"><defs><radialGradient id="${id}" cx="28%" cy="105%" r="140%"><stop offset="0" stop-color="#FDF497"/><stop offset=".08" stop-color="#FDF497"/><stop offset=".45" stop-color="#FD5949"/><stop offset=".62" stop-color="#D6249F"/><stop offset=".92" stop-color="#285AEB"/></radialGradient></defs><rect width="24" height="24" rx="6" fill="url(#${id})"/><rect x="5" y="5" width="14" height="14" rx="4.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.3" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.3" cy="7.7" r="1.05" fill="#fff"/></svg>`; },
+  tiktok:() => `<svg viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#000"/><path d="${NOTE}" fill="#25F4EE" transform="translate(-.8 -.6)"/><path d="${NOTE}" fill="#FE2C55" transform="translate(.8 .6)"/><path d="${NOTE}" fill="#fff"/></svg>`,
+};
+const pl = (k, title = true) => PL[k] ? `<span class="pl"${title ? ` title="${PLATFORMS[k]}"` : ''}>${PL[k]()}</span>` : '';
+const LOGO = (s = 96) => `<svg width="${s}" height="${s}" viewBox="0 0 140 140" role="img" aria-label="شعار رواج"><circle cx="70" cy="70" r="66" fill="#26282C"/><circle cx="70" cy="70" r="59" fill="none" stroke="#C6FF00" stroke-width="2.5"/><rect x="36" y="80" width="16" height="27" rx="5" fill="#E4E6E8"/><rect x="62" y="63" width="16" height="44" rx="5" fill="#E4E6E8"/><rect x="88" y="46" width="16" height="61" rx="5" fill="#C6FF00"/><path d="M96 20 L99.2 28.8 L108 32 L99.2 35.2 L96 44 L92.8 35.2 L84 32 L92.8 28.8 Z" fill="#C6FF00"/></svg>`;
+
+/* ============ الحالة ============ */
+const S = {
+  phase:'boot', db:null, user:null, uid:null, isOwner:false, canWrite:null, readOnly:false,
+  profiles:{}, verif:{}, offers:[], deals:[], payouts:{}, msgs:[], msgsDeal:null,
+  loaded:{ profiles:false, offers:false, deals:false, verif:false },
+  mode:null, tab:'home', stack:[], onbStep:0, form:{}, sheet:null, toast:null, busy:false,
+};
+const LS = { get(k){ try { return localStorage.getItem('rawaj.' + k); } catch { return null; } }, set(k, v){ try { localStorage.setItem('rawaj.' + k, v); } catch {} } };
+const me = () => S.profiles[S.uid];
+const view = () => S.stack[S.stack.length - 1] || { v:S.tab };
+const nameOf = (uid, as) => { const p = S.profiles[uid]; return (p && p[as] && p[as].name) || (as === 'brand' ? 'براند' : 'مسوق'); };
+const vstatus = uid => { const v = S.verif[uid]; if (!v || !v.status) return 'pending'; if (v.status === 'rejected' && (S.profiles[uid]?.updatedAt || 0) > (v.at || 0)) return 'pending'; return v.status; };
+const isVerified = uid => vstatus(uid) === 'verified';
+const isSuspended = uid => vstatus(uid) === 'suspended';
+const offerOf = id => S.offers.find(o => o.id === id);
+const dealOf = id => S.deals.find(d => d.id === id);
+const myDeals = () => S.deals.filter(d => S.mode === 'brand' ? d.brandId === S.uid : d.mktId === S.uid).sort((a, b) => b.updatedAt - a.updatedAt);
+const myRoleIn = d => S.mode === 'admin' ? 'admin' : (S.mode === 'brand' && d.brandId === S.uid ? 'brand' : (S.mode === 'mkt' && d.mktId === S.uid ? 'mkt' : null));
+
+const STATUS = {
+  proposed:{ t:'تفاوض', c:'b-warn' }, agreed:{ t:'بانتظار الدفع', c:'b-warn' }, funded:{ t:'قيد التنفيذ', c:'b-neon' },
+  delivered:{ t:'بانتظار الاعتماد', c:'b-neon' }, completed:{ t:'مكتملة', c:'b-ok' }, disputed:{ t:'نزاع', c:'b-bad' },
+  rejected:{ t:'مرفوضة', c:'' }, cancelled:{ t:'ملغاة', c:'' }, refunded:{ t:'مستردة', c:'b-bad' },
+};
+const ACTIVE = ['proposed','agreed','funded','delivered','disputed'];
+const stBadge = s => `<span class="badge ${STATUS[s]?.c || ''}">${STATUS[s]?.t || s}</span>`;
+const vBadge = uid => { const s = vstatus(uid); return s === 'verified' ? '<span class="badge b-ok">موثّق</span>' : s === 'rejected' ? '<span class="badge b-bad">التوثيق مرفوض</span>' : s === 'suspended' ? '<span class="badge b-bad">موقوف</span>' : '<span class="badge b-warn">قيد التوثيق</span>'; };
+
+function needsMe(d){
+  if (S.mode === 'brand' && d.brandId === S.uid) return (d.status === 'proposed' && d.turn === 'brand') || d.status === 'agreed' || d.status === 'delivered';
+  if (S.mode === 'mkt' && d.mktId === S.uid) return (d.status === 'proposed' && d.turn === 'mkt') || d.status === 'funded';
+  return false;
+}
+const isFirstDealFor = brandId => !S.deals.some(d => d.brandId === brandId && d.fundedAt);
+
+/* ============ التشغيل ============ */
+async function boot(){
+  render();
+  const t0 = Date.now();
+  let db = null, user = null;
+  try { [db, user] = await Promise.all([claude.use('db'), claude.use('user')]); } catch {}
+  await new Promise(r => setTimeout(r, Math.max(0, 900 - (Date.now() - t0))));
+  if (!db || !user){ S.phase = 'nodb'; return render(); }
+  S.db = db; S.user = user;
+  try { S.uid = await user.id(); } catch {}
+  if (!S.uid){ S.phase = 'nodb'; return render(); }
+  S.isOwner = await user.isOwner().catch(() => false);
+  S.canWrite = await user.can('data.write').catch(() => null);
+  if (S.canWrite === false && !S.isOwner){ S.phase = 'readonly'; return render(); }
+  subscribe();
+  S.phase = 'loading'; render();
+}
+function subscribe(){
+  const err = e => toast('تعذر الاتصال: ' + (e && e.message || ''));
+  S.db.collection('profiles').onSnapshot(q => { S.profiles = {}; q.docs.forEach(d => S.profiles[d.id] = d.data()); S.loaded.profiles = true; ready(); }, err);
+  S.db.collection('verif').onSnapshot(q => { S.verif = {}; q.docs.forEach(d => S.verif[d.id] = d.data()); S.loaded.verif = true; ready(); }, () => { S.loaded.verif = true; ready(); });
+  S.db.collection('offers').onSnapshot(q => { S.offers = q.docs.map(d => ({ id:d.id, ...d.data() })); S.loaded.offers = true; ready(); }, err);
+  S.db.collection('deals').onSnapshot(q => { S.deals = q.docs.map(d => ({ id:d.id, ...d.data() })); S.loaded.deals = true; ready(); autoRelease(); }, err);
+  if (S.isOwner) S.db.collection('payouts').onSnapshot(q => { S.payouts = {}; q.docs.forEach(d => S.payouts[d.id] = d.data()); render(); }, () => {});
+  else S.db.doc('payouts/' + S.uid).onSnapshot(s => { S.payouts = s.exists ? { [S.uid]:s.data() } : {}; render(); }, () => {});
+  setInterval(() => { autoRelease(); if (view().v === 'deal') render(); }, 30000);
+}
+function ready(){
+  if (S.phase === 'loading' && S.loaded.profiles && S.loaded.offers && S.loaded.deals && S.loaded.verif){
+    const p = me();
+    if (S.isOwner){ S.mode = LS.get('mode') || 'admin'; if (S.mode !== 'admin' && !(p && p[S.mode])) S.mode = 'admin'; S.phase = 'app'; S.tab = defaultTab(); }
+    else if (p && p.role){ S.mode = p.role; S.phase = 'app'; S.tab = defaultTab(); }
+    else { S.phase = 'onboard'; S.onbStep = 0; }
+  }
+  render();
+}
+const defaultTab = () => S.mode === 'admin' ? 'dash' : S.mode === 'brand' ? 'home' : 'explore';
+
+/* ============ الكتابة ============ */
+async function guard(fn, okMsg){
+  if (S.busy) return; S.busy = true; render();
+  try { await fn(); if (okMsg) toast(okMsg); }
+  catch (e){ console.error(e); toast(e && e.code === 'invalid_argument' ? 'ما عندك صلاحية تعديل في هذا الرابط' : 'صار خطأ، حاول مرة ثانية'); }
+  finally { S.busy = false; render(); }
+}
+const logEntry = (a, extra = {}) => ({ t:Date.now(), by:S.uid, as:S.mode, a, ...extra });
+async function updDeal(d, patch, a, extra){
+  const log = (d.log || []).concat(logEntry(a, extra));
+  await S.db.doc('deals/' + d.id).update({ ...patch, log, updatedAt:Date.now() });
+}
+async function sysMsg(dealId, text){ await S.db.collection('deals/' + dealId + '/msgs').add({ by:'sys', text, t:Date.now() }); }
+const releasing = new Set();
+async function autoRelease(){
+  const now = Date.now();
+  for (const d of S.deals){
+    if (d.status !== 'delivered' || !d.deliveredAt || releasing.has(d.id)) continue;
+    if (now < d.deliveredAt + AUTO_RELEASE_H * 36e5) continue;
+    if (!(S.isOwner || d.brandId === S.uid || d.mktId === S.uid)) continue;
+    releasing.add(d.id);
+    const cut = creatorCut(d.price, d.brandFee || 0);
+    try {
+      await S.db.doc('deals/' + d.id).update({ status:'completed', completedAt:now, commission:cut.commission, payout:cut.payout, autoReleased:true, updatedAt:now, log:(d.log || []).concat({ t:now, by:'sys', a:'تحرير تلقائي بعد 72 ساعة من التسليم' }) });
+      await sysMsg(d.id, 'تحرر المبلغ تلقائياً بعد مرور 72 ساعة على التسليم.');
+    } catch {}
+  }
+}
+
+/* ============ التنقل ============ */
+let lastKey = '';
+function go(v, p = {}){ S.stack.push({ v, ...p }); openMsgs(); render(); document.querySelector('main')?.scrollTo(0, 0); }
+function back(){ S.stack.pop(); openMsgs(); render(); }
+function setTab(t){ S.tab = t; S.stack = []; openMsgs(); render(); }
+let unsubMsgs = null;
+function openMsgs(){
+  const v = view();
+  const id = v.v === 'deal' ? v.id : null;
+  if (id === S.msgsDeal) return;
+  if (unsubMsgs){ unsubMsgs(); unsubMsgs = null; }
+  S.msgsDeal = id; S.msgs = [];
+  if (id) unsubMsgs = S.db.collection('deals/' + id + '/msgs').orderBy('t').onSnapshot(q => { S.msgs = q.docs.map(d => ({ id:d.id, ...d.data() })); render(); const m = document.getElementById('msgs'); if (m) m.scrollIntoView({ block:'end' }); }, () => {});
+}
+let toastT;
+function toast(t){ S.toast = t; clearTimeout(toastT); toastT = setTimeout(() => { S.toast = null; render(); }, 2600); render(); }
+
+/* ============ الرسم ============ */
+function render(){
+  const app = document.getElementById('app');
+  const key = S.phase + '|' + S.mode + '|' + S.tab + '|' + JSON.stringify(view()) + '|' + (S.sheet && S.sheet.k);
+  const keep = {}; let focus = null, scroll = 0;
+  if (key === lastKey){
+    app.querySelectorAll('input[id],textarea[id],select[id]').forEach(el => keep[el.id] = el.type === 'checkbox' ? el.checked : el.value);
+    focus = document.activeElement && document.activeElement.id;
+    scroll = app.querySelector('main')?.scrollTop || 0;
+  }
+  igN = 0;
+  app.innerHTML = screen() + (S.sheet ? `<div class="sheet-wrap" data-a="closeSheet"><div class="sheet" data-stop>${sheet()}</div></div>` : '') + (S.toast ? `<div class="toast">${esc(S.toast)}</div>` : '');
+  if (key === lastKey){
+    for (const [id, v] of Object.entries(keep)){ const el = document.getElementById(id); if (el){ if (el.type === 'checkbox') el.checked = v; else el.value = v; } }
+    if (focus){ const el = document.getElementById(focus); if (el){ el.focus(); try { const n = el.value.length; el.setSelectionRange(n, n); } catch {} } }
+    const m = app.querySelector('main'); if (m) m.scrollTop = scroll;
+  }
+  lastKey = key;
+}
+function screen(){
+  switch (S.phase){
+    case 'boot': case 'loading': return `<div class="splash">${LOGO(104)}<h2>رواج</h2><p class="m">${S.phase === 'loading' ? 'جاري التحميل…' : ''}</p></div>`;
+    case 'nodb': return `<div class="splash" style="padding:24px">${LOGO(88)}<h2>رواج</h2><p class="m" style="max-width:340px">سجّل دخولك بحسابك في Claude ثم افتح الرابط مرة ثانية، عشان نقدر نحفظ حسابك وصفقاتك.</p></div>`;
+    case 'readonly': return `<div class="splash" style="padding:24px">${LOGO(88)}<h2>رواج</h2><p class="m" style="max-width:360px">رابطك الحالي للمشاهدة فقط، فما تقدر تسجل أو تنشر.<br>اطلب من إدارة رواج دعوتك بإيميلك عشان تقدر تستخدم التطبيق.</p></div>`;
+    case 'onboard': return onboard();
+    case 'app': return isSuspended(S.uid) && !S.isOwner ? `<div class="splash" style="padding:24px">${LOGO(80)}<h2>الحساب موقوف</h2><p class="m">تم إيقاف حسابك من إدارة رواج. تواصل مع الدعم.</p></div>` : appShell();
+  }
+  return '';
+}
+
+/* ---------- الترحيب والتسجيل ---------- */
+const SLIDES = [
+  { ic:LOGO(110), h:'أهلاً بك في رواج', p:'المكان اللي يجمع البراندات بالمسوقين وصناع المحتوى على سناب شات وانستقرام وتيك توك.' },
+  { ic:`<div class="bigic">${I.shield}</div>`, h:'فلوسك محفوظة بالضمان', p:'مبلغ الحملة ينحجز عند رواج أول ما يتم الاتفاق، وما يتحرر للمسوق إلا بعد التنفيذ والاعتماد، أو تلقائياً بعد 72 ساعة من التسليم بدون اعتراض.' },
+  { ic:`<div class="bigic">${I.coins}</div>`, h:'رسوم واضحة للجميع', p:'5٪ على البراند و10٪ على المسوق، نفس النسبة للكل. أول صفقة للبراند برسوم مخفضة للنصف.' },
+];
+function onboard(){
+  const st = S.onbStep;
+  if (st < SLIDES.length){
+    const s = SLIDES[st];
+    return `<div class="onb"><div style="display:flex;justify-content:flex-end"><button class="lnk" data-a="onbSkip">تخطي</button></div>
+      <div class="ill">${s.ic}<h2>${s.h}</h2><p>${s.p}</p></div>
+      <div class="dots">${SLIDES.map((_, i) => `<i class="${i === st ? 'on' : ''}"></i>`).join('')}</div>
+      <button class="btn" data-a="onbNext">${st === SLIDES.length - 1 ? 'ابدأ' : 'التالي'}</button></div>`;
+  }
+  if (st === SLIDES.length){
+    const r = S.form.role;
+    return `<div class="onb"><div><h2>وش تبي تسوي في رواج؟</h2><p>اختر نوع حسابك. تقدر تكمل بياناتك بالخطوة الجاية.</p></div>
+      <div class="stack" style="display:flex;flex-direction:column;gap:10px">
+        <button class="role ${r === 'brand' ? 'on' : ''}" data-a="pickRole" data-v="brand"><span class="ic">${I.store}</span><span><b>براند أو متجر</b><br><span class="m">أنشر حملات وأتعامل مع مسوقين</span></span></button>
+        <button class="role ${r === 'mkt' ? 'on' : ''}" data-a="pickRole" data-v="mkt"><span class="ic">${I.mic}</span><span><b>مسوق أو صانع محتوى</b><br><span class="m">أستقبل عروض وأنفذ حملات بمقابل</span></span></button>
+        ${S.isOwner ? `<button class="role" data-a="enterAdmin"><span class="ic">${I.admin}</span><span><b>لوحة المدير</b><br><span class="m">لأنك مالكة المنصة</span></span></button>` : ''}
+      </div><div style="flex:1"></div>
+      <button class="btn" data-a="onbRole" ${r ? '' : 'disabled'}>متابعة</button></div>`;
+  }
+  return `<div class="onb" style="padding:0"><header class="bar"><button class="ib" data-a="onbBack">${I.back}</button><h1>${S.form.role === 'brand' ? 'بيانات البراند' : 'بيانات المسوق'}</h1></header><main>${profileForm(S.form.role, null)}</main></div>`;
+}
+function profileForm(role, existing){
+  const F = S.form; const e = existing || {};
+  if (!F.init){ F.init = true; F.niche = e.niche || ''; F.followers = e.followers || ''; F.city = e.city || ''; }
+  const nicheChips = NICHES.map(n => `<button class="chip ${F.niche === n ? 'on' : ''}" data-a="fset" data-k="niche" data-v="${n}">${n}</button>`).join('');
+  const cityChips = CITIES.map(n => `<button class="chip ${F.city === n ? 'on' : ''}" data-a="fset" data-k="city" data-v="${n}">${n}</button>`).join('');
+  const common = `<label class="f">المدينة</label><div class="chips">${cityChips}</div>
+    <label class="f">نبذة <small>(اختياري)</small><textarea class="in" id="p_bio" maxlength="400">${esc(e.bio || '')}</textarea></label>`;
+  const terms = existing ? '' : `<label class="check"><input type="checkbox" id="p_terms"><span>أوافق على شروط رواج: الدفع والتواصل يكون داخل التطبيق فقط، ورسوم المنصة 5٪ على البراند و10٪ على المسوق من كل صفقة.</span></label>`;
+  if (role === 'brand') return `<div class="card">
+    <label class="f">اسم البراند أو المتجر<input class="in" id="p_name" maxlength="60" value="${esc(e.name || '')}" autocomplete="organization"></label>
+    <label class="f">رقم السجل التجاري <small>10 أرقام، نراجعه يدوياً قبل أول دفعة</small><input class="in" id="p_cr" inputmode="numeric" maxlength="10" value="${esc(e.cr || '')}" dir="ltr"></label>
+    <label class="f">المجال</label><div class="chips">${nicheChips}</div>
+    ${common}${terms}<div class="err" id="p_err"></div>
+    <button class="btn" data-a="saveProfile" data-v="brand" ${S.busy ? 'disabled' : ''}>${existing ? 'حفظ التعديلات' : 'إنشاء الحساب'}</button></div>`;
+  const h = e.handles || {};
+  return `<div class="card">
+    <label class="f">الاسم الظاهر<input class="in" id="p_name" maxlength="60" value="${esc(e.name || '')}"></label>
+    <label class="f">حساباتك <small>اكتب اسم المستخدم لكل منصة تستخدمها (واحدة على الأقل)</small></label>
+    ${Object.keys(PLATFORMS).map(k => `<div class="who">${pl(k)}<input class="in" id="p_h_${k}" placeholder="${PLATFORMS[k]}" dir="ltr" maxlength="40" value="${esc(h[k] || '')}"></div>`).join('')}
+    <label class="f">عدد المتابعين في أكبر حساب</label><div class="chips">${FOLLOWERS.map(n => `<button class="chip ${F.followers === n ? 'on' : ''}" data-a="fset" data-k="followers" data-v="${n}">${n}</button>`).join('')}</div>
+    <label class="f">رقم رخصة موثوق <small>مطلوبة للإعلان المدفوع، نراجعها يدوياً</small><input class="in" id="p_lic" maxlength="20" value="${esc(e.license || '')}" dir="ltr"></label>
+    <label class="f">مجال المحتوى</label><div class="chips">${nicheChips}</div>
+    ${common}${terms}<div class="err" id="p_err"></div>
+    <button class="btn" data-a="saveProfile" data-v="mkt" ${S.busy ? 'disabled' : ''}>${existing ? 'حفظ التعديلات' : 'إنشاء الحساب'}</button></div>`;
+}
+
+/* ---------- الهيكل ---------- */
+const TABS = {
+  brand:[['home','الرئيسية',I.home],['deals','الصفقات',I.deals],['wallet','المحفظة',I.wallet],['me','حسابي',I.user]],
+  mkt:[['explore','اكتشف',I.search],['deals','صفقاتي',I.deals],['wallet','المحفظة',I.wallet],['me','حسابي',I.user]],
+  admin:[['dash','اللوحة',I.chart],['users','المستخدمون',I.users],['adeals','الصفقات',I.deals],['payouts','التحويلات',I.bank],['me','حسابي',I.user]],
+};
+function tabBadge(t){
+  if (t === 'deals') return myDeals().filter(needsMe).length;
+  if (t === 'users') return Object.keys(S.profiles).filter(u => vstatus(u) === 'pending').length;
+  if (t === 'adeals') return S.deals.filter(d => d.status === 'disputed').length;
+  if (t === 'payouts') return pendingPayouts().length;
+  return 0;
+}
+function appShell(){
+  const v = view(); const sub = S.stack.length > 0;
+  const [title, body, action] = page(v);
+  return `<header class="bar">${sub ? `<button class="ib" data-a="back" aria-label="رجوع">${I.back}</button>` : `<span style="display:flex">${LOGO(34)}</span>`}<h1>${title}</h1>${action || ''}</header>
+    <main>${body}</main>
+    ${sub ? '' : `<nav class="tabs">${TABS[S.mode].map(([k, l, ic]) => { const n = tabBadge(k); return `<button class="${S.tab === k ? 'on' : ''}" data-a="tab" data-v="${k}">${ic}<span>${l}</span>${n ? `<i class="bdg">${n}</i>` : ''}</button>`; }).join('')}</nav>`}`;
+}
+function page(v){
+  switch (v.v){
+    case 'home': return brandHome();
+    case 'explore': return explore();
+    case 'deals': return dealsList();
+    case 'wallet': return S.mode === 'brand' ? brandWallet() : mktWallet();
+    case 'me': return mePage();
+    case 'newOffer': return newOffer();
+    case 'offer': return offerPage(v.id);
+    case 'deal': return dealPage(v.id);
+    case 'editProfile': return ['تعديل الملف', profileForm(v.role, me()?.[v.role])];
+    case 'dash': return adminDash();
+    case 'users': return adminUsers();
+    case 'auser': return adminUser(v.id);
+    case 'adeals': return adminDeals();
+    case 'payouts': return adminPayouts();
+    case 'profile': return publicProfile(v.id, v.as);
+  }
+  return ['رواج', ''];
+}
+const empty = (ic, h, p, btn = '') => `<div class="empty">${ic}<b>${h}</b><span>${p}</span>${btn}</div>`;
+
+/* ---------- البراند ---------- */
+function brandHome(){
+  const mine = S.offers.filter(o => o.brandId === S.uid).sort((a, b) => b.createdAt - a.createdAt);
+  const act = myDeals().filter(needsMe);
+  const p = me()?.brand || {};
+  let h = `<div class="card"><div class="who"><div class="av">${esc(initial(p.name))}</div><div><b>أهلاً ${esc(p.name)}</b><div class="s">${isVerified(S.uid) ? 'حسابك موثّق' : 'سجلك التجاري قيد المراجعة'}</div></div></div></div>`;
+  if (act.length) h += `<div class="sec">يحتاج إجراء منك</div>` + act.map(dealCard).join('');
+  h += `<div class="hd" style="align-items:center"><div class="sec">حملاتي</div><button class="btn sm" data-a="go" data-v="newOffer">${I.plus} حملة جديدة</button></div>`;
+  h += mine.length ? mine.map(offerCardBrand).join('') : empty(I.inbox, 'ما عندك حملات للحين', 'أنشر أول حملة وخل المسوقين يقدمون عليها.', `<button class="btn sm" data-a="go" data-v="newOffer">${I.plus} أنشر حملة</button>`);
+  return ['الرئيسية', h];
+}
+function offerCardBrand(o){
+  const ds = S.deals.filter(d => d.offerId === o.id);
+  const pend = ds.filter(d => d.status === 'proposed' && d.turn === 'brand').length;
+  return `<div class="card tap" data-a="go" data-v="offer" data-id="${o.id}"><div class="hd"><p class="t">${esc(o.title)}</p>${o.status === 'open' ? '<span class="badge b-ok">مفتوحة</span>' : '<span class="badge">مغلقة</span>'}</div>
+    <div class="hd" style="align-items:center"><div class="pls">${o.platforms.map(k => pl(k)).join('')}</div><b>${sar(o.budget)}</b></div>
+    <div class="s">${ds.length ? `${ds.length} طلب${pend ? ` · ${pend} بانتظار ردك` : ''}` : 'ما وصلت طلبات للحين'} · ${ago(o.createdAt)}</div></div>`;
+}
+function newOffer(){
+  const F = S.form; if (!F.init){ F.init = true; F.platforms = []; F.content = []; }
+  const first = isFirstDealFor(S.uid);
+  const b = Number(F.budgetPreview) || 0; const fees = brandFees(b, first);
+  return ['حملة جديدة', `<div class="card">
+    <label class="f">عنوان الحملة<input class="in" id="o_title" maxlength="80"></label>
+    <label class="f">وش المطلوب من المسوق؟ <small>اشرح المنتج، الرسالة، والممنوعات</small><textarea class="in" id="o_desc" maxlength="1500"></textarea></label>
+    <label class="f">المنصات</label><div class="chips">${Object.keys(PLATFORMS).map(k => `<button class="chip ${F.platforms.includes(k) ? 'on' : ''}" data-a="ftog" data-k="platforms" data-v="${k}">${pl(k, false)}${PLATFORMS[k]}</button>`).join('')}</div>
+    <label class="f">نوع المحتوى</label><div class="chips">${CONTENT.map(k => `<button class="chip ${F.content.includes(k) ? 'on' : ''}" data-a="ftog" data-k="content" data-v="${k}">${k}</button>`).join('')}</div>
+    <div class="split"><label class="f">الميزانية لكل مسوق (ر.س)<input class="in" id="o_budget" inputmode="decimal" dir="ltr" data-in="budget"></label>
+    <label class="f">عدد المسوقين<input class="in" id="o_slots" inputmode="numeric" value="1" dir="ltr"></label></div>
+    <label class="f">مدة التنفيذ بعد الدفع (أيام)<input class="in" id="o_days" inputmode="numeric" value="7" dir="ltr"></label>
+    <div class="note" id="o_fee">${b >= MIN_BUDGET ? `عند الاتفاق تدفع لكل مسوق: ${sar(b)} + رسوم المنصة ${sar(fees.fee)}${first ? ' (أول صفقة بنص الرسوم)' : ''} + ضريبة ${sar(fees.vat)} = <b>${sar(fees.total)}</b>` : `الحد الأدنى للميزانية ${MIN_BUDGET} ر.س. المبلغ النهائي يتحدد بعد التفاوض مع كل مسوق.`}</div>
+    <div class="err" id="o_err"></div>
+    <button class="btn" data-a="publishOffer" ${S.busy ? 'disabled' : ''}>نشر الحملة</button></div>`];
+}
+function offerPage(id){
+  const o = offerOf(id); if (!o) return ['الحملة', empty(I.inbox, 'الحملة غير موجودة', '')];
+  const owner = o.brandId === S.uid && S.mode === 'brand';
+  let h = `<div class="card"><div class="hd"><p class="t">${esc(o.title)}</p>${o.status === 'open' ? '<span class="badge b-ok">مفتوحة</span>' : '<span class="badge">مغلقة</span>'}</div>
+    ${owner ? '' : `<button class="who lnk" style="text-decoration:none;color:inherit" data-a="go" data-v="profile" data-id="${o.brandId}" data-as="brand"><div class="av">${esc(initial(nameOf(o.brandId, 'brand')))}</div><div style="text-align:right"><b>${esc(nameOf(o.brandId, 'brand'))}</b>${isVerified(o.brandId) ? VF : ''}<div class="s">${esc(S.profiles[o.brandId]?.brand?.niche || '')}</div></div></button>`}
+    <p class="m" style="white-space:pre-wrap;color:var(--text)">${esc(o.desc)}</p>
+    <div class="row"><span class="l">المنصات</span><span class="pls">${o.platforms.map(k => pl(k)).join('')}</span></div>
+    ${o.content?.length ? `<div class="row"><span class="l">المحتوى</span><span class="v">${o.content.map(esc).join('، ')}</span></div>` : ''}
+    <div class="row"><span class="l">الميزانية لكل مسوق</span><span class="v">${sar(o.budget)}</span></div>
+    <div class="row"><span class="l">المسوقين المطلوبين</span><span class="v">${o.slots}</span></div>
+    <div class="row"><span class="l">مدة التنفيذ</span><span class="v">${o.days} أيام بعد الدفع</span></div>
+    ${!owner && S.mode === 'mkt' ? `<div class="row"><span class="l">صافي لك بعد عمولة 10٪</span><span class="v">${sar(creatorCut(o.budget, r2(o.budget * BRAND_FEE)).payout)}</span></div>` : ''}</div>`;
+  if (owner){
+    const ds = S.deals.filter(d => d.offerId === id).sort((a, b) => b.updatedAt - a.updatedAt);
+    h += `<div class="sec">الطلبات (${ds.length})</div>` + (ds.length ? ds.map(dealCard).join('') : empty(I.inbox, 'ما وصلت طلبات للحين', 'بنعلمك هنا أول ما يقدم مسوق على الحملة.'));
+    h += o.status === 'open' ? `<button class="btn o" data-a="closeOffer" data-id="${id}">إغلاق الحملة</button>` : `<button class="btn o" data-a="reopenOffer" data-id="${id}">إعادة فتح الحملة</button>`;
+  } else if (S.mode === 'mkt'){
+    const mine = S.deals.find(d => d.offerId === id && d.mktId === S.uid && !['rejected','cancelled'].includes(d.status));
+    if (mine) h += `<div class="note">قدمت على هذه الحملة. <button class="lnk" data-a="go" data-v="deal" data-id="${mine.id}">افتح الصفقة</button></div>`;
+    else if (o.status !== 'open') h += `<div class="note">هذه الحملة مغلقة.</div>`;
+    else h += `<div class="btns"><button class="btn" data-a="apply" data-id="${id}">أقبل بالميزانية</button><button class="btn o" data-a="sheet" data-v="counter" data-id="${id}">أقترح سعر</button></div>`;
+  }
+  return ['تفاصيل الحملة', h];
+}
+
+/* ---------- المسوق ---------- */
+function explore(){
+  const F = S.form; const pf = F.pf || 'all';
+  const list = S.offers.filter(o => o.status === 'open' && o.brandId !== S.uid && !isSuspended(o.brandId) && (pf === 'all' || o.platforms.includes(pf))).sort((a, b) => b.createdAt - a.createdAt);
+  let h = `<div class="filter"><button class="chip ${pf === 'all' ? 'on' : ''}" data-a="fset" data-k="pf" data-v="all">الكل</button>${Object.keys(PLATFORMS).map(k => `<button class="chip ${pf === k ? 'on' : ''}" data-a="fset" data-k="pf" data-v="${k}">${pl(k, false)}${PLATFORMS[k]}</button>`).join('')}</div>`;
+  if (!isVerified(S.uid)) h += `<div class="warn">رخصة موثوق حقتك قيد المراجعة. تقدر تقدم على الحملات الحين، والبراند ما يقدر يدفع إلا بعد توثيقك.</div>`;
+  h += list.length ? list.map(o => {
+    const applied = S.deals.some(d => d.offerId === o.id && d.mktId === S.uid && !['rejected','cancelled'].includes(d.status));
+    return `<div class="card tap" data-a="go" data-v="offer" data-id="${o.id}"><div class="who"><div class="av">${esc(initial(nameOf(o.brandId, 'brand')))}</div><div><b>${esc(nameOf(o.brandId, 'brand'))}</b>${isVerified(o.brandId) ? VF : ''}<div class="s">${ago(o.createdAt)}</div></div></div>
+      <p class="t">${esc(o.title)}</p><div class="hd" style="align-items:center"><div class="pls">${o.platforms.map(k => pl(k)).join('')}</div><b>${sar(o.budget)}</b></div>${applied ? '<span class="badge b-neon">قدمت عليها</span>' : ''}</div>`;
+  }).join('') : empty(I.search, 'ما فيه حملات مفتوحة حالياً', 'أول ما ينشر براند حملة بتظهر لك هنا مباشرة.');
+  return ['اكتشف الحملات', h];
+}
+
+/* ---------- الصفقات ---------- */
+function dealCard(d){
+  const o = offerOf(d.offerId) || { title:d.offerTitle || 'حملة' };
+  const other = S.mode === 'brand' ? nameOf(d.mktId, 'mkt') : S.mode === 'mkt' ? nameOf(d.brandId, 'brand') : `${nameOf(d.brandId, 'brand')} ← ${nameOf(d.mktId, 'mkt')}`;
+  const need = needsMe(d);
+  return `<div class="card tap" data-a="go" data-v="deal" data-id="${d.id}" ${need ? 'style="border-color:var(--text)"' : ''}><div class="hd"><div><p class="t">${esc(o.title)}</p><div class="s">${esc(other)}</div></div>${stBadge(d.status)}</div>
+    <div class="hd" style="align-items:center"><span class="s">${need ? '<b style="color:var(--text)">● بانتظارك</b>' : ago(d.updatedAt)}</span><b>${sar(d.price)}</b></div></div>`;
+}
+function dealsList(){
+  const F = S.form; const f = F.df || 'active';
+  const all = myDeals();
+  const list = all.filter(d => f === 'active' ? ACTIVE.includes(d.status) : !ACTIVE.includes(d.status));
+  const h = `<div class="filter"><button class="chip ${f === 'active' ? 'on' : ''}" data-a="fset" data-k="df" data-v="active">الجارية</button><button class="chip ${f === 'done' ? 'on' : ''}" data-a="fset" data-k="df" data-v="done">المنتهية</button></div>`
+    + (list.length ? list.map(dealCard).join('') : empty(I.deals, f === 'active' ? 'ما عندك صفقات جارية' : 'ما فيه صفقات منتهية', S.mode === 'brand' ? 'لما يقدم مسوق على حملتك بتظهر الصفقة هنا.' : 'قدم على حملة من صفحة اكتشف وبتظهر الصفقة هنا.'));
+  return [S.mode === 'brand' ? 'الصفقات' : 'صفقاتي', h];
+}
+const STEPS = ['proposed','agreed','funded','delivered','completed'];
+function dealPage(id){
+  const d = dealOf(id); if (!d) return ['الصفقة', empty(I.deals, 'الصفقة غير موجودة', '')];
+  const o = offerOf(d.offerId) || { title:d.offerTitle || 'حملة', platforms:[], desc:'' };
+  const role = myRoleIn(d);
+  if (!role && !S.isOwner) return ['الصفقة', empty(I.deals, 'ما عندك صلاحية على هذه الصفقة', '')];
+  const si = STEPS.indexOf(d.status);
+  let h = `<div class="card"><div class="hd"><p class="t">${esc(o.title)}</p>${stBadge(d.status)}</div>
+    <div class="track">${STEPS.map((s, i) => `<i class="${si > i || d.status === 'completed' ? 'on' : si === i ? 'cur' : ''}"></i>`).join('')}</div>
+    <div class="row"><span class="l">البراند</span><button class="lnk" data-a="go" data-v="profile" data-id="${d.brandId}" data-as="brand">${esc(nameOf(d.brandId, 'brand'))}</button></div>
+    <div class="row"><span class="l">المسوق</span><button class="lnk" data-a="go" data-v="profile" data-id="${d.mktId}" data-as="mkt">${esc(nameOf(d.mktId, 'mkt'))}</button></div>
+    <div class="row"><span class="l">${d.status === 'proposed' ? 'السعر المقترح' : 'السعر المتفق عليه'}</span><span class="v">${sar(d.price)}</span></div>
+    <div class="row"><span class="l">المنصات</span><span class="pls">${(o.platforms || []).map(k => pl(k)).join('')}</span></div></div>`;
+  h += actionBox(d, role, o);
+  h += money(d, role);
+  h += `<div class="sec">المحادثة</div><div class="card"><div class="msgs">${S.msgs.length ? S.msgs.map(m => m.by === 'sys' ? `<div class="msg sys">${esc(m.text)}</div>` : `<div class="msg ${m.by === S.uid ? 'me' : 'them'}">${esc(m.text)}<span class="s">${m.by === d.brandId ? esc(nameOf(d.brandId, 'brand')) : m.by === d.mktId ? esc(nameOf(d.mktId, 'mkt')) : 'إدارة رواج'} · ${ago(m.t)}</span></div>`).join('') : '<p class="s" style="text-align:center">ابدأ المحادثة. أرقام الجوال والإيميلات تنخفى لحماية الطرفين.</p>'}<span id="msgs"></span></div>
+    ${role || S.isOwner ? `<div class="comp"><textarea class="in" id="chat_${d.id}" rows="1" maxlength="1000" placeholder="اكتب رسالة…"></textarea><button class="send" data-a="sendMsg" data-id="${d.id}" aria-label="إرسال">${I.send}</button></div>` : ''}</div>`;
+  h += `<div class="sec">سجل الصفقة</div><div class="card tl">${(d.log || []).slice().reverse().map(l => `<div><span>${esc(l.a)}${l.price ? ` · ${sar(l.price)}` : ''}${l.note ? `<br><span class="s">${esc(l.note)}</span>` : ''}</span><span class="s">${dt(l.t)}</span></div>`).join('')}</div>`;
+  return ['الصفقة', h];
+}
+function countdown(d){ const ms = Math.max(0, d.deliveredAt + AUTO_RELEASE_H * 36e5 - Date.now()); const hh = Math.floor(ms / 36e5), mm = Math.floor(ms % 36e5 / 6e4); return `${hh} ساعة و${mm} دقيقة`; }
+function actionBox(d, role, o){
+  const B = S.busy ? 'disabled' : '';
+  const box = (txt, btns = '') => `<div class="card" style="border-color:var(--text)"><p class="m" style="color:var(--text)">${txt}</p>${btns}</div>`;
+  const wait = txt => `<div class="note">${txt}</div>`;
+  const other = role === 'brand' ? nameOf(d.mktId, 'mkt') : nameOf(d.brandId, 'brand');
+  if (role === 'admin'){
+    let a = '';
+    if (d.status === 'disputed') a = box(`<b>نزاع مفتوح</b> من ${d.disputeBy === d.brandId ? 'البراند' : 'المسوق'}: ${esc(d.disputeReason || '')}`, `<div class="btns"><button class="btn" data-a="adminRelease" data-id="${d.id}" ${B}>تحرير للمسوق</button><button class="btn d" data-a="adminRefund" data-id="${d.id}" ${B}>استرداد للبراند</button></div>`);
+    else if (['funded','delivered'].includes(d.status)) a = box('إجراءات الإدارة على مبلغ محجوز في الضمان.', `<div class="btns"><button class="btn o" data-a="adminRelease" data-id="${d.id}" ${B}>تحرير الآن</button><button class="btn d" data-a="adminRefund" data-id="${d.id}" ${B}>استرداد</button></div>`);
+    else if (['proposed','agreed'].includes(d.status)) a = box('الصفقة ما زالت قبل الدفع.', `<button class="btn d" data-a="adminCancel" data-id="${d.id}" ${B}>إلغاء الصفقة</button>`);
+    return a;
+  }
+  if (!role) return '';
+  switch (d.status){
+    case 'proposed':
+      if (d.turn === role) return box(`<b>${esc(other)}</b> ${d.log?.length > 1 ? 'رد بعرض جديد' : 'قدم على حملتك'} بسعر <b>${sar(d.price)}</b>${d.lastNote ? `<br>«${esc(d.lastNote)}»` : ''}`,
+        `<div class="btns"><button class="btn" data-a="accept" data-id="${d.id}" ${B}>قبول</button><button class="btn o" data-a="sheet" data-v="recounter" data-id="${d.id}">عرض مضاد</button></div><button class="btn d" data-a="reject" data-id="${d.id}" ${B}>رفض</button>`);
+      return wait(`بانتظار رد ${esc(other)} على سعر ${sar(d.price)}.`) + `<button class="btn o" data-a="withdraw" data-id="${d.id}" ${B}>سحب العرض</button>`;
+    case 'agreed':
+      if (role === 'brand'){
+        if (!isVerified(d.brandId)) return box('تم الاتفاق. الدفع يتفعل بعد ما توثّق الإدارة سجلك التجاري.');
+        if (!isVerified(d.mktId)) return box('تم الاتفاق. الدفع يتفعل بعد ما توثّق الإدارة رخصة موثوق حقت المسوق.');
+        const f = brandFees(d.price, isFirstDealFor(d.brandId));
+        return box(`تم الاتفاق على ${sar(d.price)}. ادفع عشان ينحجز المبلغ في الضمان ويبدأ المسوق التنفيذ. الإجمالي <b>${sar(f.total)}</b>.`, `<button class="btn" data-a="sheet" data-v="pay" data-id="${d.id}">ادفع وأودع في الضمان</button>`);
+      }
+      return wait(`تم الاتفاق على ${sar(d.price)}. بانتظار دفع البراند، وبعدها تبدأ التنفيذ. ${isVerified(d.mktId) ? '' : 'لازم تتوثق رخصتك قبل الدفع.'}`);
+    case 'funded':
+      if (role === 'mkt') return box(`المبلغ محجوز في الضمان. نفّذ المطلوب خلال ${o.days || 7} أيام ثم أرسل رابط المنشور.`, `<button class="btn" data-a="sheet" data-v="deliver" data-id="${d.id}">تسليم المحتوى</button>`) + `<button class="lnk" data-a="sheet" data-v="dispute" data-id="${d.id}">فتح نزاع</button>`;
+      return wait('المبلغ محجوز في الضمان والمسوق يشتغل على المحتوى.') + `<button class="lnk" data-a="sheet" data-v="dispute" data-id="${d.id}">فتح نزاع</button>`;
+    case 'delivered': {
+      const proof = `<div class="row"><span class="l">رابط المنشور</span><a href="${esc(d.proofUrl)}" target="_blank" rel="noopener noreferrer" dir="ltr" style="overflow:hidden;text-overflow:ellipsis;max-width:60%;white-space:nowrap">${esc(d.proofUrl)}</a></div>${d.proofNote ? `<p class="m">${esc(d.proofNote)}</p>` : ''}`;
+      if (role === 'brand') return box(`سلّم المسوق المحتوى. راجعه واعتمده، أو افتح نزاع إذا فيه مشكلة. يتحرر تلقائياً بعد <b class="cd">${countdown(d)}</b>.${proof}`, `<button class="btn" data-a="approve" data-id="${d.id}" ${B}>اعتماد وتحرير المبلغ</button><button class="btn d" data-a="sheet" data-v="dispute" data-id="${d.id}">اعتراض</button>`);
+      return wait(`سلّمت المحتوى. بانتظار اعتماد البراند، أو يتحرر تلقائياً بعد <b class="cd">${countdown(d)}</b>.`) + `<div class="card">${proof}</div>`;
+    }
+    case 'disputed': return wait(`فيه نزاع مفتوح: «${esc(d.disputeReason || '')}». إدارة رواج تراجع المحادثة والإثباتات وترد عليكم هنا.`);
+    case 'completed': return role === 'mkt' ? box(`تمت الصفقة، وأضفنا <b>${sar(d.payout)}</b> لمحفظتك.`) : box('تمت الصفقة وتحرر المبلغ للمسوق. شكراً لك.');
+    case 'refunded': return wait(role === 'brand' ? `تم استرداد ${sar(d.refund)} لك.` : 'انتهت الصفقة باسترداد المبلغ للبراند.');
+    case 'rejected': return wait('تم رفض العرض.');
+    case 'cancelled': return wait('تم إلغاء الصفقة.');
+  }
+  return '';
+}
+function money(d, role){
+  if (!d.fundedAt) return '';
+  let h = `<div class="sec">المبالغ</div><div class="card">`;
+  if (role !== 'mkt') h += `<div class="row"><span class="l">قيمة الحملة</span><span class="v">${sar(d.price)}</span></div><div class="row"><span class="l">رسوم المنصة على البراند${d.firstDeal ? ' (خصم أول صفقة)' : ''}</span><span class="v">${sar(d.brandFee)}</span></div><div class="row"><span class="l">ضريبة القيمة المضافة</span><span class="v">${sar(d.vat)}</span></div><div class="row tot"><span>دفع البراند</span><b>${sar(d.total)}</b></div>`;
+  if (role !== 'brand'){
+    const c = d.status === 'completed' ? { commission:d.commission, payout:d.payout } : creatorCut(d.price, d.brandFee || 0);
+    h += `<div class="row"><span class="l">${role === 'mkt' ? 'قيمة الحملة' : 'للمسوق قبل العمولة'}</span><span class="v">${sar(d.price)}</span></div><div class="row"><span class="l">عمولة رواج من المسوق</span><span class="v">− ${sar(c.commission)}</span></div><div class="row tot"><span>صافي المسوق</span><b>${sar(c.payout)}</b></div>`;
+  }
+  return h + `<p class="s">${d.sandbox ? 'دفعة تجريبية: ما انخصم مبلغ حقيقي.' : ''}</p></div>`;
+}
+
+/* ---------- المحفظة ---------- */
+function mktTotals(uid){
+  const ds = S.deals.filter(d => d.mktId === uid);
+  const earned = r2(ds.filter(d => d.status === 'completed').reduce((s, d) => s + (d.payout || 0), 0));
+  const escrow = r2(ds.filter(d => ['funded','delivered','disputed'].includes(d.status)).reduce((s, d) => s + creatorCut(d.price, d.brandFee || 0).payout, 0));
+  const reqs = (S.payouts[uid]?.requests) || [];
+  const withdrawn = r2(reqs.filter(r => r.status !== 'rejected').reduce((s, r) => s + r.amount, 0));
+  return { earned, escrow, available:r2(earned - withdrawn), reqs };
+}
+function mktWallet(){
+  const t = mktTotals(S.uid);
+  const done = S.deals.filter(d => d.mktId === S.uid && d.status === 'completed').sort((a, b) => b.completedAt - a.completedAt);
+  let h = `<div class="kpis"><div class="kpi hero"><span class="s">متاح للسحب</span><b style="font-size:28px">${sar(t.available)}</b></div>
+    <div class="kpi"><span class="s">في الضمان</span><b>${sar(t.escrow)}</b></div><div class="kpi"><span class="s">إجمالي الأرباح</span><b>${sar(t.earned)}</b></div></div>
+    <button class="btn" data-a="sheet" data-v="withdraw" ${t.available >= MIN_WITHDRAW ? '' : 'disabled'}>سحب إلى حسابي البنكي</button>
+    ${t.available < MIN_WITHDRAW ? `<p class="s" style="text-align:center">الحد الأدنى للسحب ${MIN_WITHDRAW} ر.س</p>` : ''}`;
+  if (t.reqs.length) h += `<div class="sec">طلبات السحب</div><div class="card tl">${t.reqs.slice().reverse().map(r => `<div><span>${sar(r.amount)} <span class="s" dir="ltr">${esc(maskIban(r.iban))}</span></span><span>${r.status === 'paid' ? '<span class="badge b-ok">تم التحويل</span>' : r.status === 'rejected' ? '<span class="badge b-bad">مرفوض</span>' : '<span class="badge b-warn">قيد التحويل</span>'}</span></div>`).join('')}</div>`;
+  h += `<div class="sec">الأرباح</div>` + (done.length ? `<div class="card tl">${done.map(d => `<div><span>${esc(offerOf(d.offerId)?.title || 'حملة')}<br><span class="s">${esc(nameOf(d.brandId, 'brand'))}</span></span><span style="text-align:left"><b>+ ${sar(d.payout)}</b><br><span class="s">${ago(d.completedAt)}</span></span></div>`).join('')}</div>` : empty(I.wallet, 'محفظتك فاضية للحين', 'أرباحك من الصفقات المكتملة بتظهر هنا.'));
+  return ['المحفظة', h];
+}
+const maskIban = s => s ? s.slice(0, 4) + ' •••• ' + s.slice(-4) : '';
+function brandWallet(){
+  const ds = S.deals.filter(d => d.brandId === S.uid && d.fundedAt).sort((a, b) => b.fundedAt - a.fundedAt);
+  const paid = r2(ds.reduce((s, d) => s + d.total, 0));
+  const held = r2(ds.filter(d => ['funded','delivered','disputed'].includes(d.status)).reduce((s, d) => s + d.price, 0));
+  const refunded = r2(ds.filter(d => d.status === 'refunded').reduce((s, d) => s + (d.refund || 0), 0));
+  let h = `<div class="kpis"><div class="kpi hero"><span class="s">محجوز في الضمان الآن</span><b style="font-size:28px">${sar(held)}</b></div>
+    <div class="kpi"><span class="s">إجمالي المدفوع</span><b>${sar(paid)}</b></div><div class="kpi"><span class="s">المسترد</span><b>${sar(refunded)}</b></div></div>`;
+  h += `<div class="sec">المدفوعات</div>` + (ds.length ? `<div class="card tl">${ds.map(d => `<div><span>${esc(offerOf(d.offerId)?.title || 'حملة')}<br><span class="s">${esc(nameOf(d.mktId, 'mkt'))} · ${STATUS[d.status].t}</span></span><span style="text-align:left"><b>${sar(d.total)}</b><br><span class="s">${ago(d.fundedAt)}</span></span></div>`).join('')}</div>` : empty(I.wallet, 'ما فيه مدفوعات للحين', 'لما تدفع لأول صفقة بتظهر هنا مع الفاتورة.'));
+  return ['المحفظة', h];
+}
+
+/* ---------- حسابي ---------- */
+function mePage(){
+  const p = me() || {};
+  let h = '';
+  if (S.isOwner){
+    h += `<div class="card"><p class="t">طريقة العرض</p><p class="m">كمالكة للمنصة تقدرين تتنقلين بين الواجهات الثلاث وتجربينها بنفسك.</p><div class="chips">
+      ${[['admin','المدير'],['brand','براند'],['mkt','مسوق']].map(([k, l]) => `<button class="chip ${S.mode === k ? 'on' : ''}" data-a="switchMode" data-v="${k}">${l}</button>`).join('')}</div></div>`;
+  }
+  if (S.mode !== 'admin' && p[S.mode]){
+    const x = p[S.mode];
+    h += `<div class="card" style="align-items:center;text-align:center"><div class="av lg">${esc(initial(x.name))}</div><p class="t">${esc(x.name)}</p>${vBadge(S.uid)}
+      <p class="m">${S.mode === 'brand' ? `سجل تجاري: <span dir="ltr">${esc(x.cr)}</span>` : `رخصة موثوق: <span dir="ltr">${esc(x.license)}</span>`}</p>
+      ${S.mode === 'mkt' ? `<div class="pls">${Object.keys(x.handles || {}).filter(k => x.handles[k]).map(k => pl(k)).join('')}</div>` : ''}
+      <button class="btn o" data-a="go" data-v="editProfile" data-role="${S.mode}">تعديل الملف</button></div>`;
+    if (vstatus(S.uid) === 'rejected') h += `<div class="warn">رفضت الإدارة التوثيق${S.verif[S.uid]?.note ? `: ${esc(S.verif[S.uid].note)}` : ''}. عدّل الرقم من «تعديل الملف» وبنراجعه مرة ثانية.</div>`;
+  }
+  h += `<div class="card"><p class="t">الرسوم</p><div class="row"><span class="l">رسوم البراند</span><span class="v">5٪ + ضريبة</span></div><div class="row"><span class="l">عمولة المسوق</span><span class="v">10٪</span></div><div class="row"><span class="l">أقل رسوم للصفقة</span><span class="v">${MIN_FEE} ر.س</span></div><div class="row"><span class="l">أول صفقة للبراند</span><span class="v">نص الرسوم</span></div><div class="row"><span class="l">التحرير التلقائي</span><span class="v">بعد 72 ساعة من التسليم</span></div></div>
+    <div class="note">الدفع حالياً في وضع تجريبي إلى أن تتفعل بوابة الدفع. كل الحسابات والحجز والتحرير تشتغل بنفس القواعد، لكن بدون خصم حقيقي من البطاقة.</div>`;
+  return ['حسابي', h];
+}
+function publicProfile(uid, as){
+  const p = S.profiles[uid]?.[as]; if (!p) return ['الملف', empty(I.user, 'الملف غير موجود', '')];
+  const done = S.deals.filter(d => (as === 'brand' ? d.brandId : d.mktId) === uid && d.status === 'completed').length;
+  let h = `<div class="card" style="align-items:center;text-align:center"><div class="av lg">${esc(initial(p.name))}</div><p class="t">${esc(p.name)}${isVerified(uid) ? VF : ''}</p>
+    <p class="m">${[p.niche, p.city, as === 'mkt' ? p.followers + ' متابع' : ''].filter(Boolean).map(esc).join(' · ')}</p>
+    ${as === 'mkt' ? `<div class="pls">${Object.keys(p.handles || {}).filter(k => p.handles[k]).map(k => pl(k)).join('')}</div>` : ''}
+    ${p.bio ? `<p class="m" style="white-space:pre-wrap">${esc(p.bio)}</p>` : ''}<div class="s">${done} صفقة مكتملة</div></div>`;
+  return [esc(p.name), h];
+}
+
+/* ---------- المدير ---------- */
+const pendingPayouts = () => Object.entries(S.payouts).flatMap(([uid, p]) => (p.requests || []).filter(r => r.status === 'pending').map(r => ({ ...r, uid })));
+function adminDash(){
+  const users = Object.entries(S.profiles);
+  const brands = users.filter(([, p]) => p.brand).length, mkts = users.filter(([, p]) => p.mkt).length;
+  const pendV = users.filter(([u]) => vstatus(u) === 'pending').length;
+  const funded = S.deals.filter(d => d.fundedAt);
+  const gmv = r2(funded.reduce((s, d) => s + d.total, 0));
+  const done = S.deals.filter(d => d.status === 'completed');
+  const rev = r2(done.reduce((s, d) => s + (d.brandFee || 0) + (d.commission || 0), 0));
+  const held = r2(S.deals.filter(d => ['funded','delivered','disputed'].includes(d.status)).reduce((s, d) => s + d.price, 0));
+  const disputes = S.deals.filter(d => d.status === 'disputed');
+  const pp = pendingPayouts();
+  let h = `<div class="kpis"><div class="kpi hero"><span class="s">إيرادات المنصة (صفقات مكتملة)</span><b style="font-size:28px">${sar(rev)}</b></div>
+    <div class="kpi"><span class="s">حجم التداول</span><b>${sar(gmv)}</b></div><div class="kpi"><span class="s">في الضمان الآن</span><b>${sar(held)}</b></div>
+    <div class="kpi tap" data-a="tab" data-v="users"><span class="s">البراندات</span><b>${brands}</b></div><div class="kpi tap" data-a="tab" data-v="users"><span class="s">المسوقين</span><b>${mkts}</b></div>
+    <div class="kpi"><span class="s">حملات مفتوحة</span><b>${S.offers.filter(o => o.status === 'open').length}</b></div><div class="kpi tap" data-a="tab" data-v="adeals"><span class="s">صفقات جارية</span><b>${S.deals.filter(d => ACTIVE.includes(d.status)).length}</b></div></div>`;
+  const todo = [];
+  if (pendV) todo.push(`<div class="card tap" data-a="tab" data-v="users"><div class="hd"><b>طلبات توثيق</b><span class="badge b-warn">${pendV}</span></div><span class="s">سجلات تجارية ورخص موثوق بانتظار مراجعتك</span></div>`);
+  if (disputes.length) todo.push(`<div class="card tap" data-a="tab" data-v="adeals"><div class="hd"><b>نزاعات مفتوحة</b><span class="badge b-bad">${disputes.length}</span></div><span class="s">المبالغ موقوفة لين تقررين</span></div>`);
+  if (pp.length) todo.push(`<div class="card tap" data-a="tab" data-v="payouts"><div class="hd"><b>طلبات سحب</b><span class="badge b-warn">${pp.length}</span></div><span class="s">بإجمالي ${sar(pp.reduce((s, r) => s + r.amount, 0))}</span></div>`);
+  h += `<div class="sec">مهامك</div>` + (todo.length ? todo.join('') : `<div class="note">ما فيه شي ينتظرك حالياً.</div>`);
+  if (!users.length) h += empty(I.users, 'ما سجل أحد للحين', 'شاركي رابط التطبيق مع أول البراندات والمسوقين، وبيظهرون هنا أول ما يسجلون.');
+  return ['لوحة المدير', h];
+}
+function adminUsers(){
+  const F = S.form; const f = F.uf || 'all';
+  const list = Object.entries(S.profiles).filter(([u, p]) => f === 'all' || (f === 'pending' ? vstatus(u) === 'pending' : f === 'brand' ? p.brand : p.mkt)).sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
+  let h = `<div class="filter">${[['all','الكل'],['pending','بانتظار التوثيق'],['brand','البراندات'],['mkt','المسوقين']].map(([k, l]) => `<button class="chip ${f === k ? 'on' : ''}" data-a="fset" data-k="uf" data-v="${k}">${l}</button>`).join('')}</div>`;
+  h += list.length ? list.map(([u, p]) => { const as = p.role || (p.brand ? 'brand' : 'mkt'); const x = p[as] || {}; return `<div class="card tap" data-a="go" data-v="auser" data-id="${u}"><div class="hd"><div class="who"><div class="av">${esc(initial(x.name))}</div><div><b>${esc(x.name)}</b><div class="s">${as === 'brand' ? 'براند' : 'مسوق'} · ${ago(p.createdAt || Date.now())}${u === S.uid ? ' · أنتِ' : ''}</div></div></div>${vBadge(u)}</div></div>`; }).join('') : empty(I.users, 'ما فيه مستخدمين هنا', '');
+  return ['المستخدمون', h];
+}
+function adminUser(uid){
+  const p = S.profiles[uid]; if (!p) return ['المستخدم', ''];
+  const B = S.busy ? 'disabled' : '';
+  let h = '';
+  for (const as of ['brand','mkt']){
+    const x = p[as]; if (!x) continue;
+    h += `<div class="card"><div class="hd"><p class="t">${esc(x.name)}</p><span class="badge">${as === 'brand' ? 'براند' : 'مسوق'}</span></div>
+      ${as === 'brand' ? `<div class="row"><span class="l">السجل التجاري</span><span class="v" dir="ltr">${esc(x.cr)}</span></div>` : `<div class="row"><span class="l">رخصة موثوق</span><span class="v" dir="ltr">${esc(x.license)}</span></div>${Object.keys(x.handles || {}).filter(k => x.handles[k]).map(k => `<div class="row"><span class="l">${pl(k)}</span><span class="v" dir="ltr">@${esc(x.handles[k].replace(/^@/, ''))}</span></div>`).join('')}<div class="row"><span class="l">المتابعين</span><span class="v">${esc(x.followers)}</span></div>`}
+      <div class="row"><span class="l">المجال</span><span class="v">${esc(x.niche)}</span></div><div class="row"><span class="l">المدينة</span><span class="v">${esc(x.city)}</span></div>
+      ${x.bio ? `<p class="m">${esc(x.bio)}</p>` : ''}</div>`;
+  }
+  h += `<div class="card"><div class="hd"><b>حالة الحساب</b>${vBadge(uid)}</div>
+    <p class="m">${p.brand ? 'تحقق من السجل التجاري في منصة الأعمال (مركز الأعمال السعودي).' : ''} ${p.mkt ? 'تحقق من رخصة موثوق في منصة موثوق التابعة للهيئة العامة للإعلام المرئي والمسموع.' : ''}</p>
+    <label class="f">ملاحظة للمستخدم <small>(تظهر له عند الرفض)</small><input class="in" id="v_note" maxlength="200"></label>
+    <div class="btns"><button class="btn" data-a="verify" data-id="${uid}" data-v="verified" ${B}>توثيق</button><button class="btn o" data-a="verify" data-id="${uid}" data-v="rejected" ${B}>رفض</button></div>
+    ${uid !== S.uid ? (isSuspended(uid) ? `<button class="btn o" data-a="verify" data-id="${uid}" data-v="pending" ${B}>رفع الإيقاف</button>` : `<button class="btn d" data-a="verify" data-id="${uid}" data-v="suspended" ${B}>إيقاف الحساب</button>`) : ''}</div>`;
+  const ds = S.deals.filter(d => d.brandId === uid || d.mktId === uid).sort((a, b) => b.updatedAt - a.updatedAt);
+  h += `<div class="sec">الصفقات (${ds.length})</div>` + (ds.length ? ds.map(dealCard).join('') : '<p class="s">ما عنده صفقات.</p>');
+  return ['المستخدم', h];
+}
+function adminDeals(){
+  const F = S.form; const f = F.af || 'active';
+  const list = S.deals.filter(d => f === 'all' || (f === 'active' ? ACTIVE.includes(d.status) && d.status !== 'disputed' : f === 'disputed' ? d.status === 'disputed' : !ACTIVE.includes(d.status))).sort((a, b) => b.updatedAt - a.updatedAt);
+  const h = `<div class="filter">${[['active','جارية'],['disputed','نزاعات'],['done','منتهية'],['all','الكل']].map(([k, l]) => `<button class="chip ${f === k ? 'on' : ''}" data-a="fset" data-k="af" data-v="${k}">${l}</button>`).join('')}</div>`
+    + (list.length ? list.map(dealCard).join('') : empty(I.deals, 'ما فيه صفقات هنا', ''));
+  return ['كل الصفقات', h];
+}
+function adminPayouts(){
+  const all = Object.entries(S.payouts).flatMap(([uid, p]) => (p.requests || []).map(r => ({ ...r, uid }))).sort((a, b) => b.at - a.at);
+  const B = S.busy ? 'disabled' : '';
+  const h = all.length ? all.map(r => `<div class="card"><div class="hd"><div><b>${sar(r.amount)}</b><div class="s">${esc(nameOf(r.uid, 'mkt'))} · ${ago(r.at)}</div></div>${r.status === 'paid' ? '<span class="badge b-ok">تم التحويل</span>' : r.status === 'rejected' ? '<span class="badge b-bad">مرفوض</span>' : '<span class="badge b-warn">جديد</span>'}</div>
+      <div class="row"><span class="l">الآيبان</span><span class="v" dir="ltr">${esc(r.iban)}</span></div><div class="row"><span class="l">اسم صاحب الحساب</span><span class="v">${esc(r.holder)}</span></div>
+      ${r.status === 'pending' ? `<div class="btns"><button class="btn" data-a="payoutSet" data-id="${r.id}" data-u="${r.uid}" data-v="paid" ${B}>تم التحويل</button><button class="btn o" data-a="payoutSet" data-id="${r.id}" data-u="${r.uid}" data-v="rejected" ${B}>رفض</button></div>` : ''}</div>`).join('')
+    : empty(I.bank, 'ما فيه طلبات سحب', 'لما يطلب مسوق سحب أرباحه يظهر الطلب هنا مع الآيبان.');
+  return ['طلبات السحب', `<div class="note">التحويل حالياً يدوي من حساب رواج البنكي، وبعد تفعيل بوابة الدفع يصير آلي.</div>` + h];
+}
+
+/* ---------- النوافذ ---------- */
+function sheet(){
+  const s = S.sheet; const B = S.busy ? 'disabled' : '';
+  if (s.k === 'counter' || s.k === 'recounter'){
+    const ref = s.k === 'counter' ? offerOf(s.id)?.budget : dealOf(s.id)?.price;
+    return `<p class="t">${s.k === 'counter' ? 'اقترح سعرك' : 'عرض مضاد'}</p><p class="m">السعر الحالي ${sar(ref)}</p>
+      <label class="f">سعرك (ر.س)<input class="in" id="c_price" inputmode="decimal" dir="ltr"></label>
+      <label class="f">رسالة <small>(اختياري)</small><textarea class="in" id="c_note" maxlength="300"></textarea></label><div class="err" id="c_err"></div>
+      <button class="btn" data-a="${s.k === 'counter' ? 'applyCounter' : 'sendCounter'}" data-id="${s.id}" ${B}>إرسال</button><button class="btn o" data-a="closeSheet">إلغاء</button>`;
+  }
+  if (s.k === 'pay'){
+    const d = dealOf(s.id); const f = brandFees(d.price, isFirstDealFor(d.brandId));
+    return `<p class="t">الدفع والإيداع في الضمان</p>
+      <div class="row"><span class="l">قيمة الحملة</span><span class="v">${sar(d.price)}</span></div>
+      <div class="row"><span class="l">رسوم رواج 5٪</span><span class="v">${f.fee < f.full ? `<s class="s">${sar(f.full)}</s> ` : ''}${sar(f.fee)}</span></div>
+      <div class="row"><span class="l">ضريبة القيمة المضافة 15٪ على الرسوم</span><span class="v">${sar(f.vat)}</span></div>
+      <div class="row tot"><span>الإجمالي</span><b>${sar(f.total)}</b></div>
+      ${f.fee < f.full ? '<div class="note">أول صفقة لك برسوم مخفضة للنصف.</div>' : ''}
+      <div class="warn"><b>وضع تجريبي:</b> بوابة الدفع ما تفعلت للحين، فما راح ينخصم أي مبلغ من بطاقتك. الصفقة بتمشي بكل خطواتها كأنها مدفوعة.</div>
+      <button class="btn" data-a="pay" data-id="${d.id}" ${B}>تأكيد الدفع التجريبي ${sar(f.total)}</button><button class="btn o" data-a="closeSheet">إلغاء</button>`;
+  }
+  if (s.k === 'deliver') return `<p class="t">تسليم المحتوى</p><p class="m">حط رابط المنشور أو الستوري بعد النشر. البراند عنده 72 ساعة يعتمد أو يعترض، وبعدها يتحرر المبلغ تلقائياً.</p>
+      <label class="f">رابط المنشور<input class="in" id="d_url" dir="ltr" inputmode="url" placeholder="https://"></label>
+      <label class="f">ملاحظة <small>(اختياري)</small><textarea class="in" id="d_note" maxlength="500"></textarea></label><div class="err" id="d_err"></div>
+      <button class="btn" data-a="deliver" data-id="${s.id}" ${B}>تسليم</button><button class="btn o" data-a="closeSheet">إلغاء</button>`;
+  if (s.k === 'dispute') return `<p class="t">فتح نزاع</p><p class="m">المبلغ بيتوقف في الضمان لين تراجع إدارة رواج المحادثة والإثباتات.</p>
+      <label class="f">وش المشكلة؟<textarea class="in" id="x_reason" maxlength="500"></textarea></label><div class="err" id="x_err"></div>
+      <button class="btn d" data-a="dispute" data-id="${s.id}" ${B}>فتح النزاع</button><button class="btn o" data-a="closeSheet">إلغاء</button>`;
+  if (s.k === 'withdraw'){ const t = mktTotals(S.uid);
+    return `<p class="t">سحب الأرباح</p><p class="m">المتاح ${sar(t.available)}</p>
+      <label class="f">المبلغ (ر.س)<input class="in" id="w_amt" inputmode="decimal" dir="ltr" value="${t.available}"></label>
+      <label class="f">رقم الآيبان<input class="in" id="w_iban" dir="ltr" placeholder="SA" maxlength="34"></label>
+      <label class="f">اسم صاحب الحساب<input class="in" id="w_holder" maxlength="80"></label><div class="err" id="w_err"></div>
+      <button class="btn" data-a="withdraw" ${B}>طلب السحب</button><button class="btn o" data-a="closeSheet">إلغاء</button>`; }
+  return '';
+}
+
+/* ============ الأحداث ============ */
+const val = id => (document.getElementById(id)?.value || '').trim();
+const num = id => Number(val(id).replace(/[٠-٩]/g, c => '٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/,/g, ''));
+const setErr = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; return false; };
+
+document.addEventListener('input', e => {
+  if (e.target.dataset.in === 'budget'){ S.form.budgetPreview = num('o_budget'); const b = S.form.budgetPreview; const f = brandFees(b, isFirstDealFor(S.uid)); const el = document.getElementById('o_fee'); if (el) el.innerHTML = b >= MIN_BUDGET ? `عند الاتفاق تدفع لكل مسوق: ${sar(b)} + رسوم المنصة ${sar(f.fee)}${f.fee < f.full ? ' (أول صفقة بنص الرسوم)' : ''} + ضريبة ${sar(f.vat)} = <b>${sar(f.total)}</b>` : `الحد الأدنى للميزانية ${MIN_BUDGET} ر.س. المبلغ النهائي يتحدد بعد التفاوض مع كل مسوق.`; }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && e.target.id && e.target.id.startsWith('chat_')){ e.preventDefault(); A.sendMsg(e.target.id.slice(5)); } });
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-a]');
+  if (!el){ return; }
+  if (el.dataset.a === 'closeSheet' && e.target.closest('[data-stop]') && !e.target.closest('button')) return;
+  const fn = A[el.dataset.a]; if (fn){ e.preventDefault(); fn(el.dataset.id, el.dataset.v, el); }
+});
+const A = {
+  back, tab:(_, v) => setTab(v),
+  go:(id, v, el) => { if (v === 'newOffer' || v === 'editProfile') S.form = {}; go(v, { id, as:el.dataset.as, role:el.dataset.role }); },
+  fset:(_, v, el) => { S.form[el.dataset.k] = S.form[el.dataset.k] === v && !['pf','df','uf','af'].includes(el.dataset.k) ? '' : v; render(); },
+  ftog:(_, v, el) => { const a = S.form[el.dataset.k] || (S.form[el.dataset.k] = []); const i = a.indexOf(v); i < 0 ? a.push(v) : a.splice(i, 1); render(); },
+  sheet:(id, v) => { S.sheet = { k:v, id }; render(); },
+  closeSheet:() => { S.sheet = null; render(); },
+  onbNext:() => { S.onbStep++; render(); }, onbSkip:() => { S.onbStep = SLIDES.length; render(); },
+  onbBack:() => { S.onbStep = SLIDES.length; render(); },
+  pickRole:(_, v) => { S.form.role = v; render(); },
+  onbRole:() => { const role = S.form.role; S.form = { role }; S.onbStep = SLIDES.length + 1; render(); },
+  enterAdmin:() => { S.mode = 'admin'; LS.set('mode', 'admin'); S.phase = 'app'; S.tab = 'dash'; S.form = {}; render(); },
+  switchMode:(_, v) => {
+    if (v !== 'admin' && !(me() && me()[v])){ S.phase = 'onboard'; S.form = { role:v }; S.onbStep = SLIDES.length + 1; return render(); }
+    S.mode = v; LS.set('mode', v); S.tab = defaultTab(); S.stack = []; S.form = {}; render();
+  },
+  saveProfile:(_, role) => {
+    const F = S.form; const existing = me() && me()[role];
+    const name = val('p_name');
+    if (name.length < 2) return setErr('p_err', 'اكتب الاسم');
+    const x = { name, niche:F.niche || '', city:F.city || '', bio:val('p_bio') };
+    if (role === 'brand'){ x.cr = val('p_cr').replace(/\D/g, ''); if (!/^\d{10}$/.test(x.cr)) return setErr('p_err', 'رقم السجل التجاري لازم يكون 10 أرقام'); }
+    else {
+      x.handles = {}; for (const k of Object.keys(PLATFORMS)){ const h = val('p_h_' + k).replace(/^@/, ''); if (h) x.handles[k] = h; }
+      if (!Object.keys(x.handles).length) return setErr('p_err', 'أضف حساب واحد على الأقل');
+      x.followers = F.followers || ''; if (!x.followers) return setErr('p_err', 'اختر عدد المتابعين');
+      x.license = val('p_lic'); if (x.license.length < 4) return setErr('p_err', 'اكتب رقم رخصة موثوق');
+    }
+    if (!x.niche) return setErr('p_err', 'اختر المجال');
+    if (!existing && !document.getElementById('p_terms')?.checked) return setErr('p_err', 'لازم توافق على الشروط');
+    const prev = me() || {};
+    guard(async () => {
+      const docData = { ...prev, role:S.isOwner ? (prev.role || role) : role, [role]:x, createdAt:prev.createdAt || Date.now(), updatedAt:Date.now() };
+      await S.db.doc('profiles/' + S.uid).set(docData);
+      S.profiles[S.uid] = docData;
+      S.mode = role; if (S.isOwner) LS.set('mode', role);
+      S.phase = 'app'; S.tab = defaultTab(); S.stack = []; S.form = {};
+    }, existing ? 'انحفظت التعديلات' : 'أهلاً بك في رواج!');
+  },
+  publishOffer:() => {
+    const F = S.form;
+    const o = { title:val('o_title'), desc:val('o_desc'), platforms:F.platforms || [], content:F.content || [], budget:num('o_budget'), slots:Math.max(1, Math.min(50, Math.round(num('o_slots')) || 1)), days:Math.max(1, Math.min(60, Math.round(num('o_days')) || 7)) };
+    if (o.title.length < 4) return setErr('o_err', 'اكتب عنوان الحملة');
+    if (o.desc.length < 10) return setErr('o_err', 'اشرح المطلوب بتفصيل أكثر');
+    if (!o.platforms.length) return setErr('o_err', 'اختر منصة واحدة على الأقل');
+    if (!(o.budget >= MIN_BUDGET)) return setErr('o_err', `الحد الأدنى للميزانية ${MIN_BUDGET} ر.س`);
+    guard(async () => { await S.db.collection('offers').add({ ...o, brandId:S.uid, status:'open', createdAt:Date.now() }); S.stack = []; S.tab = 'home'; S.form = {}; }, 'انتشرت الحملة');
+  },
+  closeOffer:id => guard(() => S.db.doc('offers/' + id).update({ status:'closed' }), 'انقفلت الحملة'),
+  reopenOffer:id => guard(() => S.db.doc('offers/' + id).update({ status:'open' }), 'انفتحت الحملة'),
+  apply:id => createDeal(id, offerOf(id).budget, ''),
+  applyCounter:id => { const p = num('c_price'); if (!(p >= MIN_BUDGET)) return setErr('c_err', `أقل سعر ${MIN_BUDGET} ر.س`); createDeal(id, p, val('c_note')); },
+  sendCounter:id => {
+    const d = dealOf(id); const p = num('c_price'); const note = val('c_note');
+    if (!(p >= MIN_BUDGET)) return setErr('c_err', `أقل سعر ${MIN_BUDGET} ر.س`);
+    const role = myRoleIn(d);
+    guard(async () => { await updDeal(d, { price:p, turn:role === 'brand' ? 'mkt' : 'brand', lastNote:note }, 'عرض مضاد', { price:p, note }); S.sheet = null; }, 'انرسل العرض');
+  },
+  accept:id => { const d = dealOf(id); guard(async () => { await updDeal(d, { status:'agreed', agreedAt:Date.now(), lastNote:'' }, 'تم الاتفاق', { price:d.price }); await sysMsg(id, `تم الاتفاق على ${sar(d.price)}. الخطوة الجاية: دفع البراند.`); }, 'تم الاتفاق'); },
+  reject:id => { const d = dealOf(id); guard(() => updDeal(d, { status:'rejected' }, 'رفض العرض'), 'تم الرفض'); },
+  withdraw:id => { const d = dealOf(id); guard(() => updDeal(d, { status:'cancelled' }, 'سحب العرض'), 'انسحب العرض'); },
+  pay:id => {
+    const d = dealOf(id); if (d.status !== 'agreed') return;
+    const first = isFirstDealFor(d.brandId); const f = brandFees(d.price, first);
+    guard(async () => { await updDeal(d, { status:'funded', fundedAt:Date.now(), brandFee:f.fee, vat:f.vat, total:f.total, firstDeal:first, sandbox:true }, 'دفع وإيداع في الضمان (تجريبي)', { price:f.total }); await sysMsg(id, `انحجز ${sar(d.price)} في الضمان. يقدر المسوق يبدأ التنفيذ.`); S.sheet = null; }, 'انحجز المبلغ في الضمان');
+  },
+  deliver:id => {
+    const d = dealOf(id); const url = val('d_url');
+    if (!/^https?:\/\/\S+\.\S+/.test(url)) return setErr('d_err', 'حط رابط صحيح يبدأ بـ https://');
+    guard(async () => { await updDeal(d, { status:'delivered', deliveredAt:Date.now(), proofUrl:url, proofNote:val('d_note') }, 'تسليم المحتوى'); await sysMsg(id, 'سلّم المسوق المحتوى. عند البراند 72 ساعة للاعتماد أو الاعتراض.'); S.sheet = null; }, 'تم التسليم');
+  },
+  approve:id => { const d = dealOf(id); const c = creatorCut(d.price, d.brandFee || 0); guard(async () => { await updDeal(d, { status:'completed', completedAt:Date.now(), commission:c.commission, payout:c.payout }, 'اعتماد وتحرير المبلغ'); await sysMsg(id, `اعتمد البراند التنفيذ وتحرر ${sar(c.payout)} لمحفظة المسوق.`); }, 'تحرر المبلغ للمسوق'); },
+  dispute:id => { const d = dealOf(id); const r = val('x_reason'); if (r.length < 5) return setErr('x_err', 'اشرح المشكلة'); guard(async () => { await updDeal(d, { status:'disputed', prevStatus:d.status, disputeBy:S.uid, disputeReason:r, disputedAt:Date.now() }, 'فتح نزاع', { note:r }); await sysMsg(id, 'انفتح نزاع. المبلغ موقوف لين تراجع الإدارة.'); S.sheet = null; }, 'انفتح النزاع'); },
+  adminRelease:id => { const d = dealOf(id); if (!confirm('تحرير المبلغ للمسوق؟')) return; const c = creatorCut(d.price, d.brandFee || 0); guard(async () => { await updDeal(d, { status:'completed', completedAt:Date.now(), commission:c.commission, payout:c.payout, resolvedBy:'admin' }, 'قرار الإدارة: تحرير للمسوق'); await sysMsg(id, `قررت إدارة رواج تحرير ${sar(c.payout)} للمسوق.`); }, 'تم التحرير'); },
+  adminRefund:id => { const d = dealOf(id); if (!confirm('استرداد كامل المبلغ للبراند؟')) return; guard(async () => { await updDeal(d, { status:'refunded', refundedAt:Date.now(), refund:d.total, resolvedBy:'admin' }, 'قرار الإدارة: استرداد للبراند', { price:d.total }); await sysMsg(id, `قررت إدارة رواج استرداد ${sar(d.total)} للبراند.`); }, 'تم الاسترداد'); },
+  adminCancel:id => { const d = dealOf(id); if (!confirm('إلغاء الصفقة؟')) return; guard(() => updDeal(d, { status:'cancelled' }, 'ألغتها الإدارة'), 'انلغت'); },
+  sendMsg:id => {
+    const d = dealOf(id); const el = document.getElementById('chat_' + id); const raw = (el?.value || '').trim(); if (!raw) return;
+    const { out, hit } = mask(raw); el.value = '';
+    S.db.collection('deals/' + id + '/msgs').add({ by:S.uid, text:out, t:Date.now() }).then(() => { if (hit) toast('أخفينا بيانات التواصل. التعامل داخل رواج يحمي حقك.'); }).catch(() => { el.value = raw; toast('ما انرسلت الرسالة'); });
+    if (d) S.db.doc('deals/' + id).update({ updatedAt:Date.now() }).catch(() => {});
+  },
+  verify:(uid, v) => { const note = val('v_note'); guard(() => S.db.doc('verif/' + uid).set({ status:v, note, at:Date.now(), by:S.uid }), v === 'verified' ? 'تم التوثيق' : v === 'suspended' ? 'انوقف الحساب' : 'تم التحديث'); },
+  withdraw:() => {
+    const t = mktTotals(S.uid); const amt = r2(num('w_amt')); const iban = val('w_iban').replace(/\s/g, '').toUpperCase(); const holder = val('w_holder');
+    if (!(amt >= MIN_WITHDRAW) || amt > t.available) return setErr('w_err', `المبلغ لازم يكون بين ${MIN_WITHDRAW} و ${sar(t.available)}`);
+    if (!/^SA\d{22}$/.test(iban)) return setErr('w_err', 'الآيبان السعودي يبدأ بـ SA وبعده 22 رقم');
+    if (holder.length < 3) return setErr('w_err', 'اكتب اسم صاحب الحساب');
+    const cur = S.payouts[S.uid]?.requests || [];
+    guard(async () => { await S.db.doc('payouts/' + S.uid).set({ requests:cur.concat({ id:'w' + Date.now().toString(36), amount:amt, iban, holder, status:'pending', at:Date.now() }) }); S.sheet = null; }, 'انرسل طلب السحب');
+  },
+  payoutSet:(rid, v, el) => {
+    const uid = el.dataset.u; const reqs = (S.payouts[uid]?.requests || []).map(r => r.id === rid ? { ...r, status:v, doneAt:Date.now() } : r);
+    guard(() => S.db.doc('payouts/' + uid).set({ requests:reqs }), v === 'paid' ? 'تم تسجيل التحويل' : 'انرفض الطلب');
+  },
+};
+function createDeal(offerId, price, note){
+  const o = offerOf(offerId); if (!o) return;
+  if (S.deals.some(d => d.offerId === offerId && d.mktId === S.uid && !['rejected','cancelled'].includes(d.status))) return toast('قدمت على هذه الحملة من قبل');
+  const now = Date.now();
+  guard(async () => {
+    const ref = await S.db.collection('deals').add({ offerId, offerTitle:o.title, brandId:o.brandId, mktId:S.uid, price, status:'proposed', turn:'brand', lastNote:note, createdAt:now, updatedAt:now, log:[logEntry(price === o.budget && !note ? 'قبول الميزانية' : 'تقديم بسعر مقترح', { price, note })] });
+    S.sheet = null; S.stack = []; S.tab = 'deals'; go('deal', { id:ref.id });
+  }, 'انرسل طلبك للبراند');
+}
+
+boot();
+</script>
+</body>
+</html>
