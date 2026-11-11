@@ -67,7 +67,7 @@
 - المبالغ كلها بالهللة (integer).
 
 ## المتغيرات البيئية (أسماء فقط)
-- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (المفتاح العام من نوع publishable وصل من M.A في 2026-11-11، ويوضع في Vercel فقط)
 - `SUPABASE_SERVICE_ROLE_KEY` (للخادم وwebhook الدفع فقط)
 - `TAP_SECRET_KEY`, `TAP_WEBHOOK_SECRET` (لاحقاً)
 
