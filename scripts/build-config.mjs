@@ -1,6 +1,11 @@
 // يولّد web/config.js وقت البناء من المتغيرات العامة فقط.
 // ممنوع تمرير SUPABASE_SERVICE_ROLE_KEY أو أي مفتاح سري هنا: البناء يفشل لو المفتاح ليس عاماً.
 import { writeFileSync } from 'node:fs';
+// قفل: هذه الدورة معاينة مقفلة فقط. أي نشر إنتاج (رابط عام) يفشل عمداً.
+if (process.env.VERCEL_ENV === 'production' && process.env.RAWAJ_ALLOW_PRODUCTION !== 'yes') {
+  console.error('رفض البناء: النشر العام (production) مقفل. المسموح فقط معاينة فرع preview.');
+  process.exit(1);
+}
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const otpMode = process.env.NEXT_PUBLIC_OTP_MODE === 'live' ? 'live' : 'test';
