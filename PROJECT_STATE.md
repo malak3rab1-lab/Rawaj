@@ -37,7 +37,7 @@
 ## البنية الفعلية
 - GitHub: `malak3rab1-lab/rawaj` (فرع main). المستودع **عام** حالياً، ويُنصح بتحويله إلى خاص.
 - Supabase: المشروع `mruaivukfssjnnibdfid` · https://mruaivukfssjnnibdfid.supabase.co · خطة Free · المنطقة **Sydney (ap-southeast-2)**، بعيدة عن السعودية. نقله لفرانكفورت قبل المستخدمين الحقيقيين مقترح.
-- Vercel: لم يُنشأ بعد. الفروع على GitHub: `main` و`preview` (نفس الكود، 26d5982).
+- Vercel: المشروع `rawaj` (فريق rawaj6، خطة Hobby) مربوط بمستودع Rawaj فقط. الحماية: Vercel Authentication على كل الروابط ماعدا النطاقات الخاصة. النشر العام يفشل عمداً من `build-config.mjs`. الفروع على GitHub: `main` و`preview` (نفس الكود، 26d5982).
 
 ## هيكل الملفات
 ```
